@@ -1,7 +1,13 @@
 from google import genai
+import os
 
-# 1. API 키 설정
-MY_API_KEY = "AIzaSyBDoTJxZJkiV7NoVwd6F5cpCU2hw3Z_ABY"
+# 1. API 키 환경변수에서 불러오기 (보안 강화!)
+MY_API_KEY = os.getenv("GEMINI_API_KEY")
+
+if not MY_API_KEY:
+    print("❌ 에러: GEMINI_API_KEY 환경변수가 설정되지 않았습니다.")
+    exit()
+
 client = genai.Client(api_key=MY_API_KEY)
 
 # 2. 분석할 파일의 상대 경로 지정 (최상단 폴더 기준)
