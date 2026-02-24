@@ -76,6 +76,19 @@ variable "lifecycle_rules" {
   }))
   default = []
 }
+
+variable "logging_target_bucket" {
+  description = "액세스 로그를 저장할 대상 버킷 ID"
+  type        = string
+  default     = null
+}
+
+variable "bucket_policy_json" {
+  description = "버킷에 적용할 JSON 형태의 정책 문구"
+  type        = string
+  default     = null
+}
+
 # ------------ replica용 rule 생성---------------------------
 variable "create_replication_role" {
   description = "Replication용 IAM Role 생성 여부"

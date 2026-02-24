@@ -102,6 +102,22 @@ resource "aws_s3_bucket_lifecycle_configuration" "this" {
   }
 }
 
+# 6. S3 액세스 로깅 (선택 사항) 
+resource "aws_s3_bucket_logging" "this" {
+  count  = var.logging_target_bucket != null ? 1 : 0
+  bucket = aws_s3_bucket.this.id
+
+  target_bucket = var.logging_target_bucket
+  target_prefix = "${var.bucket_name}/access-logs/"
+}
+
+# 7. S3 버킷 정책 (외부에서 전달받은 정책이 있을 때만 생성) [cite: 44]
+resource "aws_s3_bucket_policy" "this" {
+  count  = var.bucket_policy_json != null ? 1 : 0
+  bucket = aws_s3_bucket.this.id
+  policy = var.bucket_policy_json
+}
+
 # -------------------------------------------------------------------------
 # Replication IAM Role & Policy (Optional)
 # -------------------------------------------------------------------------

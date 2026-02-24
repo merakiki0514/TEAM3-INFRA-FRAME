@@ -10,17 +10,24 @@ if not MY_API_KEY:
 
 client = genai.Client(api_key=MY_API_KEY)
 
-# 2. 분석할 파일의 상대 경로 지정 (최상단 폴더 기준)
-file_path = '../Live/ap-northeast-2/01-main-vpc/05. s3/main.tf'
+# 2. 분석할 파일 경로들 (리스트로 관리)
+target_files = {
+    "Live 코드": '../Live/ap-northeast-2/01-main-vpc/05. s3/main.tf',
+    "S3 모듈 코드": '../modules/s3/main.tf'
+}
 
-try:
-    with open(file_path, 'r', encoding='utf-8') as file:
-        iac_code = file.read()
-except FileNotFoundError:
-    print(f"[{file_path}] 파일을 찾을 수 없습니다. 터미널 위치나 경로를 확인해주세요.")
-    exit()
+# 3. 파일 내용 합치기
+combined_code = ""
+for label, path in target_files.items():
+    try:
+        with open(path, 'r', encoding='utf-8') as f:
+            combined_code += f"\n--- [{label}: {path}] ---\n"
+            combined_code += f.read()
+            combined_code += "\n"
+    except FileNotFoundError:
+        print(f"⚠️ [{path}] 파일을 찾을 수 없어 건너뜁니다.")
 
-# 3. 프롬프트 작성
+# 4. 프롬프트 작성
 prompt = f"""
 당신은 클라우드 보안 전문가입니다. 
 아래 제공된 AWS Terraform 코드에서 보안 취약점을 분석해 주세요.
@@ -31,14 +38,14 @@ prompt = f"""
 {iac_code}
 """
 
-# 4. Gemini 실행 (최신 모델 gemini-2.5-flash 사용)
+# 5. Gemini 실행 (최신 모델 gemini-2.5-flash 사용)
 print(f"🔍 [{file_path}] 코드를 최신 모델(gemini-2.5-flash)로 분석 중입니다...\n")
 response = client.models.generate_content(
     model='gemini-2.5-flash',
     contents=prompt
 )
 
-# 5. 결과 출력 및 파일 저장
+# 6. 결과 출력 및 파일 저장
 report_filename = "S3_security_report.txt"
 
 # 터미널에도 간단히 출력하고
