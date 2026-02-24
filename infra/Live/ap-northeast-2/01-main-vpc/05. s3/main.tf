@@ -23,9 +23,9 @@ module "s3_logs" {
 
   enable_versioning  = true
   force_destroy      = true
-  enable_object_lock = false 
+  enable_object_lock = true 
   kms_key_arn        = data.aws_kms_key.s3_key.arn
-  block_public_access = false
+  block_public_access = true
 }
 
 # =======================================================================
@@ -42,9 +42,10 @@ module "waf_logs" {
   bucket_name  = "aws-waf-logs-${var.project_name}-${data.aws_caller_identity.current.account_id}-${var.aws_region}"
 
   # WAF 로그는 양이 많으므로 버전 관리보다는 수명 주기 관리가 중요 (모듈 지원 시 설정)
-  enable_versioning = false 
+  enable_versioning = true 
   force_destroy     = true
-  
+  enable_object_lock = true 
+  block_public_access = true
   # WAF 로그도 암호화하여 저장
   kms_key_arn       = data.aws_kms_key.s3_key.arn
 }
