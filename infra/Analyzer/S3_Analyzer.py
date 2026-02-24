@@ -31,8 +31,8 @@ prompt = f"""
 {iac_code}
 """
 
-# 4. Gemini 실행 (최신 모델 gemini-2.5-pro 사용)
-print(f"🔍 [{file_path}] 코드를 최신 모델(gemini-2.5-pro)로 분석 중입니다...\n")
+# 4. Gemini 실행 (최신 모델 gemini-2.5-flash 사용)
+print(f"🔍 [{file_path}] 코드를 최신 모델(gemini-2.5-flash)로 분석 중입니다...\n")
 response = client.models.generate_content(
     model='gemini-2.5-flash',
     contents=prompt
