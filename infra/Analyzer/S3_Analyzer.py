@@ -35,7 +35,7 @@ prompt = f"""
 발견된 문제점과 수정(Remediation) 가이드를 한국어로 명확하게 작성해 주세요.
 
 [Terraform 코드]
-{iac_code}
+{combined_code}
 """
 
 # 5. Gemini 실행 (최신 모델 gemini-2.5-flash 사용)
