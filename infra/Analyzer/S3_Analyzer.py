@@ -39,7 +39,7 @@ prompt = f"""
 """
 
 # 5. Gemini 실행 (최신 모델 gemini-2.5-flash 사용)
-print(f"🔍 [{file_path}] 코드를 최신 모델(gemini-2.5-flash)로 분석 중입니다...\n")
+print(f"🔍 [{target_files}] 코드를 최신 모델(gemini-2.5-flash)로 분석 중입니다...\n")
 response = client.models.generate_content(
     model='gemini-2.5-flash',
     contents=prompt
