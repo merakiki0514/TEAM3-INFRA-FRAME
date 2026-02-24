@@ -33,3 +33,4 @@ jobs:
       run: |
         cd infra/Analyzer
         python3 S3_Analyzer.py
+        cat S3_security_report.txt
