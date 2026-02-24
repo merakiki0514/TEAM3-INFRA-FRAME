@@ -1,0 +1,35 @@
+name: IaC Security Scan (Gemini 2.5)
+
+# 1. 언제 이 로봇을 실행할 것인가? (Trigger)
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+jobs:
+  analyze-iac:
+    # 2. 어떤 환경(OS)에서 실행할 것인가?
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 📥 1. 내 코드 가져오기 (Checkout)
+      uses: actions/checkout@v4
+
+    - name: 🐍 2. 파이썬 환경 세팅
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+
+    - name: 📦 3. 필수 라이브러리 설치
+      run: |
+        python -m pip install --upgrade pip
+        pip install google-genai
+
+    - name: 🔍 4. Gemini 보안 분석기 실행!
+      # 방금 안전하게 숨겨둔 GitHub Secret에서 API 키를 꺼내와서 환경변수에 주입합니다.
+      env:
+        GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      run: |
+        cd infra/Analyzer
+        python3 S3_Analyzer.py
